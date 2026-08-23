@@ -65,6 +65,29 @@
       border-radius: 999px;
       font-weight: 600;
     }
+    .language-switch {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+    }
+    .lang-btn {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 9px;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
     main {
       max-width: 980px;
       margin: 0 auto;
@@ -293,38 +316,38 @@
   <header>
     <img class="logo" src="assets/visiongrid-logo.png" alt="VisionGrid Logo">
     <h1>VisionGrid</h1>
-    <p class="subtitle">
+    <p class="subtitle" data-i18n="heroSubtitle">
       Eine Android-App zum Verwalten von Kleinteilen, Regalen, Fächern und Marker-Etiketten — lokal auf deinem Gerät.
     </p>
-    <nav aria-label="Seitennavigation">
-      <a href="#features">Funktionen</a>
-      <a href="#marker-test">Marker-Test</a>
-      <a href="privacy.html">Datenschutzerklärung</a>
-      <a href="impressum.html">Impressum</a>
-      <a href="privacy.html#contact">Kontakt</a>
+    <nav aria-label="Seitennavigation" data-language-switch>
+      <a href="#features" data-i18n="navFeatures">Funktionen</a>
+      <a href="#marker-test" data-i18n="navMarkerTest">Marker-Test</a>
+      <a href="privacy.html" data-i18n="navPrivacy">Datenschutzerklärung</a>
+      <a href="impressum.html" data-i18n="navImprint">Impressum</a>
+      <a href="privacy.html#contact" data-i18n="navContact">Kontakt</a>
     </nav>
   </header>
 
   <main>
     <div class="grid" id="features">
       <article class="card">
-        <h3>Regale verwalten</h3>
-        <p>Lege Regale und Fächer an, ordne Artikel zu und behalte freie oder belegte Marker im Blick.</p>
+        <h3 data-i18n="featureShelvesTitle">Regale verwalten</h3>
+        <p data-i18n="featureShelvesBody">Lege Regale und Fächer an, ordne Artikel zu und behalte freie oder belegte Marker im Blick.</p>
       </article>
       <article class="card">
-        <h3>Live Scan</h3>
-        <p>Erkenne ArUco-Marker mit der Kamera und öffne schnell die zugehörigen Artikeldetails.</p>
+        <h3 data-i18n="featureScanTitle">Live Scan</h3>
+        <p data-i18n="featureScanBody">Erkenne ArUco-Marker mit der Kamera und öffne schnell die zugehörigen Artikeldetails.</p>
       </article>
       <article class="card">
-        <h3>Offline nutzbar</h3>
-        <p>VisionGrid ist für die lokale Nutzung gebaut. Deine Lagerdaten bleiben auf deinem Gerät.</p>
+        <h3 data-i18n="featureOfflineTitle">Offline nutzbar</h3>
+        <p data-i18n="featureOfflineBody">VisionGrid ist für die lokale Nutzung gebaut. Deine Lagerdaten bleiben auf deinem Gerät.</p>
       </article>
     </div>
 
     <section class="marker-demo" id="marker-test">
       <div>
-        <h2>Marker 0 testen</h2>
-        <p>
+        <h2 data-i18n="markerTitle">Marker 0 testen</h2>
+        <p data-i18n-html="markerBody">
           Öffne die Seite auf dem Handy, starte die Kamera und halte den Testmarker <strong>0</strong> ins Bild.
           Sobald der Marker erkannt wird, zeigt VisionGrid direkt das Etikett.
         </p>
@@ -334,34 +357,35 @@
           </div>
         </div>
         <div class="demo-actions">
-          <button class="button" type="button" id="startCameraButton">Kamera starten</button>
-          <button class="button" type="button" id="testMarkerButton">Demo anzeigen</button>
-          <button class="button" type="button" id="resetMarkerButton">Zurücksetzen</button>
+          <button class="button" type="button" id="startCameraButton" data-i18n="cameraStart">Kamera starten</button>
+          <button class="button" type="button" id="testMarkerButton" data-i18n="demoShow">Demo anzeigen</button>
+          <button class="button" type="button" id="resetMarkerButton" data-i18n="reset">Zurücksetzen</button>
         </div>
       </div>
       <div class="marker-stage camera-stage" aria-label="Marker 0 Live-Kameratest">
         <video id="cameraVideo" playsinline muted></video>
         <canvas id="scanCanvas"></canvas>
-        <div class="camera-empty" id="cameraEmpty">Kamera starten und Marker 0 ins Bild halten.</div>
+        <div class="camera-empty" id="cameraEmpty" data-i18n="cameraEmpty">Kamera starten und Marker 0 ins Bild halten.</div>
         <div class="scan-frame">
           <div class="marker-label" id="markerLabel">
             <img class="label-logo" src="assets/visiongrid-logo.png" alt="VisionGrid Logo">
             <div>
               <div class="label-title">VisionGrid</div>
-              <div class="label-meta">Marker 0 · Test erkannt</div>
-              <div class="label-meta">Bestand: 1 / 1</div>
+              <div class="label-meta" data-i18n="testFound">Marker 0 · Test erkannt</div>
+              <div class="label-meta" data-i18n="stock">Bestand: 1 / 1</div>
             </div>
           </div>
         </div>
-        <p class="demo-status" id="markerStatus">Bereit für Live-Test.</p>
+        <p class="demo-status" id="markerStatus" data-i18n="ready">Bereit für Live-Test.</p>
       </div>
     </section>
 
   </main>
 
   <footer>
-    © 2026 VisionGrid · Android-App für Regale, Marker und Kleinteile · <a href="privacy.html">Datenschutzerklärung</a> · <a href="impressum.html">Impressum</a>
+    <span data-i18n="footerHome">© 2026 VisionGrid · Android-App für Regale, Marker und Kleinteile</span> · <a href="privacy.html" data-i18n="navPrivacy">Datenschutzerklärung</a> · <a href="impressum.html" data-i18n="navImprint">Impressum</a>
   </footer>
+  <script src="assets/i18n.js"></script>
   <script>
     let openCvReady = false;
     window.Module = {
@@ -369,7 +393,7 @@
         openCvReady = true;
         const status = document.getElementById('markerStatus');
         if (status && !status.dataset.cameraStarted) {
-          status.textContent = 'OpenCV bereit – Kamera starten und Marker 0 testen.';
+          status.textContent = vgText('opencvReady');
         }
       }
     };
@@ -388,7 +412,7 @@
 
     function showDetected(source = 'Marker 0 erkannt') {
       markerLabel.classList.add('visible');
-      markerStatus.textContent = `${source} – Bestand: 1 / 1.`;
+      markerStatus.textContent = `${source} – ${vgText('stock')}.`;
     }
 
     function orderCorners(points) {
@@ -513,7 +537,7 @@
           }
         }
       } catch (error) {
-        markerStatus.textContent = 'OpenCV-Scanfehler – bitte Marker größer und heller ins Bild halten.';
+        markerStatus.textContent = vgText('scanError');
       } finally {
         src.delete();
         gray.delete();
@@ -528,7 +552,7 @@
     async function startCamera() {
       try {
         if (!navigator.mediaDevices?.getUserMedia) {
-          markerStatus.textContent = 'Dieser Browser unterstützt keinen Kamerazugriff.';
+          markerStatus.textContent = vgText('noCamera');
           return;
         }
         cameraStream = await navigator.mediaDevices.getUserMedia({
@@ -540,8 +564,8 @@
         cameraEmpty.style.display = 'none';
         markerStatus.dataset.cameraStarted = 'true';
         markerStatus.textContent = openCvReady
-          ? 'Kamera aktiv – Marker 0 ins mittlere Bild halten.'
-          : 'Kamera aktiv – OpenCV lädt noch kurz ...';
+          ? vgText('cameraActive')
+          : vgText('opencvLoading');
         markerHits = 0;
         markerMisses = 0;
         clearInterval(scanTimer);
@@ -550,30 +574,30 @@
           if (found) {
             markerHits++;
             markerMisses = 0;
-            if (markerHits >= 2) showDetected('Marker 0 live erkannt');
+            if (markerHits >= 2) showDetected(vgText('detected'));
           } else {
             markerHits = Math.max(0, markerHits - 1);
             markerMisses++;
             if (markerMisses >= 4) {
               markerLabel.classList.remove('visible');
-              markerStatus.textContent = 'Marker nicht sichtbar – Marker 0 ins mittlere Bild halten.';
+              markerStatus.textContent = vgText('notVisible');
             }
           }
         }, 220);
       } catch (error) {
-        markerStatus.textContent = 'Kamera konnte nicht gestartet werden. Bitte HTTPS/localhost und Kamera-Rechte prüfen.';
+        markerStatus.textContent = vgText('cameraError');
       }
     }
 
     document.getElementById('startCameraButton').addEventListener('click', startCamera);
     document.getElementById('testMarkerButton').addEventListener('click', () => {
-      showDetected('Demo-Marker 0 erkannt');
+      showDetected(vgText('demoDetected'));
     });
     document.getElementById('resetMarkerButton').addEventListener('click', () => {
       markerLabel.classList.remove('visible');
       markerHits = 0;
       markerMisses = 0;
-      markerStatus.textContent = cameraStream ? 'Kamera aktiv – Marker 0 ins Bild halten.' : 'Bereit für Live-Test.';
+      markerStatus.textContent = cameraStream ? vgText('cameraActive') : vgText('ready');
     });
   </script>
 </body>

@@ -14,6 +14,9 @@
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.03em; color: var(--text); text-decoration: none; }
     .brand img { width: 46px; height: 46px; border-radius: 13px; object-fit: cover; border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(47,51,55,.10); }
     a.button { color: var(--text); text-decoration: none; border: 1px solid var(--line); background: var(--card); padding: 11px 16px; border-radius: 999px; font-weight: 600; }
+    .language-switch { display: inline-flex; gap: 6px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.72); }
+    .lang-btn { border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; padding: 7px 9px; }
+    .lang-btn.active { background: var(--text); color: #fff; }
     section { background: rgba(255,255,255,.86); border: 1px solid var(--line); border-radius: 28px; padding: 24px; box-shadow: 0 12px 28px rgba(47,51,55,.07); }
     h1, h2, h3 { letter-spacing: -0.03em; }
     h2 { font-size: 32px; margin-top: 0; }
@@ -25,15 +28,16 @@
   <header>
     <div class="topbar">
       <a class="brand" href="index.html"><img src="assets/visiongrid-logo.png" alt="VisionGrid Logo"> VisionGrid</a>
-      <a class="button" href="index.html">Zurück zur Startseite</a>
+      <a class="button" href="index.html" data-i18n="backHome">Zurück zur Startseite</a>
+      <div data-language-switch></div>
     </div>
   </header>
 
   <main>
     <section id="impressum">
-      <h2>Impressum</h2>
+      <h2 data-i18n="imprintTitle">Impressum</h2>
 
-      <h3>Angaben gemäß § 5 DDG</h3>
+      <h3 data-i18n="imprintLegal">Angaben gemäß § 5 DDG</h3>
       <p>
         Jamal Samuel Said<br>
         Kerschensteinerstraße 7<br>
@@ -41,13 +45,13 @@
         Deutschland
       </p>
 
-      <h3>Kontakt</h3>
+      <h3 data-i18n="imprintContact">Kontakt</h3>
       <p>
-        Telefon: <a href="tel:+4915252583194">+49 1525 2583194</a><br>
-        E-Mail: <a href="mailto:steamdmovieyt@gmail.com">steamdmovieyt@gmail.com</a>
+        <span data-i18n-prefix="phone">Telefon</span><a href="tel:+4915252583194">+49 1525 2583194</a><br>
+        <span data-i18n-prefix="email">E-Mail</span><a href="mailto:steamdmovieyt@gmail.com">steamdmovieyt@gmail.com</a>
       </p>
 
-      <h3>Verantwortlich für den Inhalt</h3>
+      <h3 data-i18n="imprintResponsible">Verantwortlich für den Inhalt</h3>
       <p>
         Jamal Samuel Said<br>
         Kerschensteinerstraße 7<br>
@@ -57,7 +61,8 @@
   </main>
 
   <footer>
-    © 2026 VisionGrid · <a href="privacy.html">Datenschutzerklärung</a>
+    © 2026 VisionGrid · <a href="privacy.html" data-i18n="navPrivacy">Datenschutzerklärung</a>
   </footer>
+  <script src="assets/i18n.js"></script>
 </body>
 </html>

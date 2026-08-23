@@ -14,6 +14,9 @@
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.03em; color: var(--text); text-decoration: none; }
     .brand img { width: 46px; height: 46px; border-radius: 13px; object-fit: cover; border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(47,51,55,.10); }
     a.button { color: var(--text); text-decoration: none; border: 1px solid var(--line); background: var(--card); padding: 11px 16px; border-radius: 999px; font-weight: 600; }
+    .language-switch { display: inline-flex; gap: 6px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.72); }
+    .lang-btn { border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; padding: 7px 9px; }
+    .lang-btn.active { background: var(--text); color: #fff; }
     section { background: rgba(255,255,255,.86); border: 1px solid var(--line); border-radius: 28px; padding: 24px; box-shadow: 0 12px 28px rgba(47,51,55,.07); }
     h1, h2, h3 { letter-spacing: -0.03em; }
     h2 { font-size: 32px; margin-top: 0; }
@@ -26,19 +29,20 @@
   <header>
     <div class="topbar">
       <a class="brand" href="index.html"><img src="assets/visiongrid-logo.png" alt="VisionGrid Logo"> VisionGrid</a>
-      <a class="button" href="index.html">Zurück zur Startseite</a>
+      <a class="button" href="index.html" data-i18n="backHome">Zurück zur Startseite</a>
+      <div data-language-switch></div>
     </div>
   </header>
 
   <main>    <section id="privacy">
-      <h2>Datenschutzerklärung</h2>
-      <p class="notice">
+      <h2 data-i18n="privacyTitle">Datenschutzerklärung</h2>
+      <p class="notice" data-i18n="privacyNotice">
         Stand: 23. August 2026. Diese Datenschutzerklärung beschreibt die Datenverarbeitung der Android-App VisionGrid
         und dieser Webseite.
       </p>
 
-      <h3>1. Verantwortlicher</h3>
-      <p>
+      <h3 data-i18n="responsibleTitle">1. Verantwortlicher</h3>
+      <p data-i18n-html="responsibleBody">
         Verantwortlich für VisionGrid ist der Anbieter der App und Webseite.<br>
         Jamal Samuel Said<br>
         Kerschensteinerstraße 7<br>
@@ -47,98 +51,99 @@
         Kontakt: <strong>steamdmovieyt@gmail.com</strong>
       </p>
 
-      <h3>2. Welche Daten verarbeitet die App VisionGrid?</h3>
-      <p>
+      <h3 data-i18n="appDataTitle">2. Welche Daten verarbeitet die App VisionGrid?</h3>
+      <p data-i18n="appDataBody">
         Die Android-App VisionGrid speichert vom Nutzer eingegebene Daten lokal auf dem Gerät. Dazu können gehören:
       </p>
       <ul>
-        <li>Artikelname, Beschreibung, Notizen und Suchbegriffe</li>
-        <li>Bestand, Zielbestand und Warnwerte</li>
-        <li>Regalnamen, Fachpositionen und Marker-IDs</li>
-        <li>optional ausgewählte Artikelbilder</li>
-        <li>App-Einstellungen wie Sprache, Darstellung oder Warnwerte</li>
+        <li data-i18n="item1">Artikelname, Beschreibung, Notizen und Suchbegriffe</li>
+        <li data-i18n="item2">Bestand, Zielbestand und Warnwerte</li>
+        <li data-i18n="item3">Regalnamen, Fachpositionen und Marker-IDs</li>
+        <li data-i18n="item4">optional ausgewählte Artikelbilder</li>
+        <li data-i18n="item5">App-Einstellungen wie Sprache, Darstellung oder Warnwerte</li>
       </ul>
 
-      <h3>3. Kamera</h3>
-      <p>
+      <h3 data-i18n="cameraTitle">3. Kamera</h3>
+      <p data-i18n="cameraBody">
         Die Kamera wird in der App verwendet, um ArUco-Marker zu erkennen. Kamerabilder werden in der App lokal verarbeitet
         und nicht an einen Server des Anbieters übertragen. Die Kamera wird nur genutzt, wenn der Nutzer die Kamerafunktion startet
         und die Android-Kameraberechtigung erteilt.
       </p>
 
-      <h3>4. Mikrofon und Sprachbefehle</h3>
-      <p>
+      <h3 data-i18n="micTitle">4. Mikrofon und Sprachbefehle</h3>
+      <p data-i18n="micBody">
         Falls Sprachfunktionen genutzt werden, kann die App das Mikrofon verwenden, um Sprachbefehle wie Suche oder Scan-Start zu erkennen.
         Die Mikrofonfunktion wird nur genutzt, wenn der Nutzer sie startet und die Android-Mikrofonberechtigung erteilt. VisionGrid speichert
         keine Audioaufnahmen dauerhaft in der App-Datenbank.
       </p>
 
-      <h3>5. Webseite und Marker-Test</h3>
-      <p>
+      <h3 data-i18n="webTitle">5. Webseite und Marker-Test</h3>
+      <p data-i18n="webBody1">
         Diese Webseite enthält einen freiwilligen Marker-Test. Wenn der Nutzer die Kamera im Browser startet, verarbeitet der Browser
         das Kamerabild lokal auf dem Gerät, um den Testmarker zu erkennen. Die Webseite speichert diese Kamerabilder nicht und lädt sie
         nicht zum Anbieter hoch.
       </p>
-      <p>
+      <p data-i18n-html="webBody2">
         Für die Marker-Erkennung auf der Webseite wird OpenCV.js von <code>docs.opencv.org</code> geladen. Beim Laden dieser Datei
         kann der Browser technisch notwendige Verbindungsdaten, zum Beispiel IP-Adresse, Zeitpunkt des Zugriffs und Browserinformationen,
         an den Betreiber dieser externen Quelle übertragen.
       </p>
 
-      <h3>6. Rechtsgrundlage und Zweck</h3>
-      <p>
+      <h3 data-i18n="legalTitle">6. Rechtsgrundlage und Zweck</h3>
+      <p data-i18n="legalBody">
         Die Verarbeitung lokal eingegebener App-Daten erfolgt zur Bereitstellung der App-Funktionen, insbesondere zur Verwaltung von
         Artikeln, Beständen, Regalen, Fächern und Markern. Soweit eine Einwilligung erforderlich ist, zum Beispiel für den Kamerazugriff,
         erfolgt die Verarbeitung auf Grundlage der vom Nutzer erteilten Berechtigung. Die Verarbeitung der Webseite erfolgt zur
         Bereitstellung der Webseite und des freiwilligen Marker-Tests.
       </p>
 
-      <h3>7. Speicherung und Löschung</h3>
-      <p>
+      <h3 data-i18n="storageTitle">7. Speicherung und Löschung</h3>
+      <p data-i18n="storageBody">
         Die App speichert Daten lokal auf dem Gerät, bis der Nutzer sie innerhalb der App löscht, die App-Daten über Android löscht
         oder die App deinstalliert. Da VisionGrid derzeit kein Nutzerkonto bereitstellt, gibt es keine serverseitigen Kontodaten beim Anbieter.
       </p>
 
-      <h3>8. Weitergabe an Dritte</h3>
-      <p>
+      <h3 data-i18n="sharingTitle">8. Weitergabe an Dritte</h3>
+      <p data-i18n="sharingBody">
         VisionGrid verkauft keine personenbezogenen Daten und gibt lokal gespeicherte Lagerdaten nicht an Dritte weiter.
         Eine Datenübertragung kann nur stattfinden, wenn der Nutzer selbst Daten exportiert, teilt oder externe Dienste aufruft.
       </p>
 
-      <h3>9. Internetverbindung</h3>
-      <p>
+      <h3 data-i18n="internetTitle">9. Internetverbindung</h3>
+      <p data-i18n="internetBody">
         Die Kernfunktionen der App sind für lokale Nutzung ausgelegt. Falls zukünftig Online-Funktionen ergänzt werden,
         wird diese Datenschutzerklärung entsprechend aktualisiert. Die Webseite benötigt für den OpenCV-basierten Marker-Test eine
         Internetverbindung, solange OpenCV.js von einer externen Quelle geladen wird.
       </p>
 
-      <h3>10. Rechte der Nutzer</h3>
-      <p>
+      <h3 data-i18n="rightsTitle">10. Rechte der Nutzer</h3>
+      <p data-i18n="rightsBody">
         Nutzer können ihre lokal gespeicherten Daten innerhalb der App ändern oder löschen. Zusätzlich können App-Daten über die
         Android-Systemeinstellungen gelöscht werden. Soweit personenbezogene Daten verarbeitet werden, können Nutzer je nach anwendbarem
         Recht Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch verlangen.
         Nutzer können sich außerdem an eine zuständige Datenschutzaufsichtsbehörde wenden.
       </p>
 
-      <h3>11. Kinder</h3>
-      <p>
+      <h3 data-i18n="childrenTitle">11. Kinder</h3>
+      <p data-i18n="childrenBody">
         VisionGrid richtet sich nicht speziell an Kinder. Die App ist als Werkzeug zur Organisation von Regalen, Markern und Kleinteilen gedacht.
       </p>
 
-      <h3>12. Änderungen</h3>
-      <p>
+      <h3 data-i18n="changesTitle">12. Änderungen</h3>
+      <p data-i18n="changesBody">
         Diese Datenschutzerklärung kann angepasst werden, wenn sich Funktionen der App oder Webseite ändern.
       </p>
 
-      <h3>13. Kontakt</h3>
-      <p id="contact">
+      <h3 data-i18n="privacyContactTitle">13. Kontakt</h3>
+      <p id="contact" data-i18n-html="privacyContactBody">
         Bei Fragen zum Datenschutz: <strong>steamdmovieyt@gmail.com</strong>
       </p>
     </section>
   </main>
 
   <footer>
-    © 2026 VisionGrid · Datenschutzerklärung · <a href="impressum.html">Impressum</a>
+    © 2026 VisionGrid · <span data-i18n="privacyTitle">Datenschutzerklärung</span> · <a href="impressum.html" data-i18n="navImprint">Impressum</a>
   </footer>
+  <script src="assets/i18n.js"></script>
 </body>
 </html>
