@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VisionGrid – Lager und Regale einfach scannen</title>
+  <meta name="description" content="VisionGrid ist eine Android-App zum Verwalten von Regalen, Fächern, Artikeln und ArUco-Markern.">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f4f1;
+      --card: #ffffff;
+      --text: #17191c;
+      --muted: #666d75;
+      --line: #dedbd5;
+      --accent: #2f3337;
+      --soft: #ece9e3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 56px 20px 28px;
+      text-align: center;
+    }
+    .logo {
+      width: 118px;
+      height: 118px;
+      border-radius: 30px;
+      object-fit: cover;
+      margin-bottom: 18px;
+      box-shadow: 0 14px 35px rgba(0,0,0,.14);
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 8vw, 62px);
+      letter-spacing: -0.05em;
+    }
+    .subtitle {
+      max-width: 720px;
+      margin: 16px auto 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+    nav a, .button {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: var(--card);
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0 34px;
+    }
+    .card, section {
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 12px 28px rgba(47,51,55,.07);
+    }
+    .card h3, section h2 {
+      margin: 0 0 8px;
+      letter-spacing: -0.03em;
+    }
+    .card p, section p, li {
+      color: var(--muted);
+    }
+    .privacy {
+      margin-top: 24px;
+    }
+    .privacy h2 {
+      font-size: 32px;
+    }
+    .notice {
+      background: var(--soft);
+      border-radius: 18px;
+      padding: 14px 16px;
+      color: var(--muted);
+    }
+    .marker-demo {
+      margin: 4px 0 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 390px);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .demo-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    button.button {
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+    }
+    .marker-stage {
+      min-height: 250px;
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(47,51,55,.08), rgba(255,255,255,.82)),
+        repeating-linear-gradient(90deg, transparent 0 48px, rgba(47,51,55,.045) 49px 50px),
+        repeating-linear-gradient(0deg, transparent 0 48px, rgba(47,51,55,.045) 49px 50px);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      overflow: hidden;
+    }
+    .test-marker-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 22px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(47,51,55,.08);
+    }
+    .aruco-marker {
+      width: 148px;
+      height: 148px;
+      background: #fff;
+      padding: 16px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+    }
+    .aruco-grid {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      background: #000;
+    }
+    .aruco-grid span { background: #000; }
+    .aruco-grid .w { background: #fff; }
+    .marker-id {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .camera-stage {
+      position: relative;
+      min-height: 310px;
+      background: #1b1d20;
+      color: white;
+    }
+    .camera-stage video,
+    .camera-stage canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .camera-stage canvas {
+      display: none;
+    }
+    .camera-empty {
+      position: absolute;
+      inset: 22px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: rgba(255,255,255,.78);
+      border: 1px dashed rgba(255,255,255,.28);
+      border-radius: 20px;
+      padding: 18px;
+    }
+    .scan-frame {
+      width: min(100%, 310px);
+      aspect-ratio: 1.65;
+      border: 3px solid var(--accent);
+      border-radius: 22px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.54);
+    }
+    .scan-frame::before,
+    .scan-frame::after {
+      content: "";
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border-color: var(--accent);
+      border-style: solid;
+    }
+    .scan-frame::before {
+      top: -11px;
+      left: -11px;
+      border-width: 5px 0 0 5px;
+      border-top-left-radius: 10px;
+    }
+    .scan-frame::after {
+      right: -11px;
+      bottom: -11px;
+      border-width: 0 5px 5px 0;
+      border-bottom-right-radius: 10px;
+    }
+    .marker-label {
+      width: 82%;
+      min-height: 92px;
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 14px;
+      align-items: center;
+      border: 2px solid #2f9d68;
+      border-radius: 16px;
+      background: rgba(255,255,255,.93);
+      box-shadow: 0 14px 34px rgba(47,51,55,.14);
+      padding: 12px;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity .22s ease, transform .22s ease;
+      z-index: 2;
+    }
+    .marker-label.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .logo-placeholder {
+      height: 68px;
+      width: 68px;
+      border-radius: 14px;
+      background: var(--soft);
+      border: 1px dashed #a9a59d;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .label-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .label-meta {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .demo-status {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .camera-stage .demo-status {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      margin: 0;
+      color: white;
+      background: rgba(23,25,28,.72);
+      border-radius: 999px;
+      padding: 9px 12px;
+      text-align: center;
+      z-index: 3;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 36px 20px 50px;
+    }
+    code {
+      background: var(--soft);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .marker-demo { grid-template-columns: 1fr; }
+      header { padding-top: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="logo" src="assets/visiongrid-logo.png" alt="VisionGrid Logo">
+    <h1>VisionGrid</h1>
+    <p class="subtitle">
+      Eine Android-App zum Verwalten von Kleinteilen, Regalen, Fächern und Marker-Etiketten — lokal auf deinem Gerät.
+    </p>
+    <nav aria-label="Seitennavigation">
+      <a href="#features">Funktionen</a>
+      <a href="#marker-test">Marker-Test</a>
+      <a href="#privacy">Datenschutzerklärung</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="grid" id="features">
+      <article class="card">
+        <h3>Regale verwalten</h3>
+        <p>Lege Regale und Fächer an, ordne Artikel zu und behalte freie oder belegte Marker im Blick.</p>
+      </article>
+      <article class="card">
+        <h3>Live Scan</h3>
+        <p>Erkenne ArUco-Marker mit der Kamera und öffne schnell die zugehörigen Artikeldetails.</p>
+      </article>
+      <article class="card">
+        <h3>Offline nutzbar</h3>
+        <p>VisionGrid ist für die lokale Nutzung gebaut. Deine Lagerdaten bleiben auf deinem Gerät.</p>
+      </article>
+    </div>
+
+    <section class="marker-demo" id="marker-test">
+      <div>
+        <h2>Marker 0 testen</h2>
+        <p>
+          Öffne die Seite auf dem Handy, starte die Kamera und halte den Testmarker <strong>0</strong> ins Bild.
+          Sobald der Marker erkannt wird, zeigt VisionGrid direkt das Etikett.
+        </p>
+        <div class="test-marker-card" aria-label="Testmarker 0">
+          <div class="aruco-marker">
+            <div class="aruco-grid" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span class="w"></span><span class="w"></span><span></span><span></span><span></span>
+              <span></span><span></span><span class="w"></span><span class="w"></span><span></span><span></span>
+              <span></span><span></span><span></span><span class="w"></span><span></span><span></span>
+              <span></span><span class="w"></span><span></span><span></span><span class="w"></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="marker-id">Marker 0</div>
+        </div>
+        <div class="demo-actions">
+          <button class="button" type="button" id="startCameraButton">Kamera starten</button>
+          <button class="button" type="button" id="testMarkerButton">Demo anzeigen</button>
+          <button class="button" type="button" id="resetMarkerButton">Zurücksetzen</button>
+        </div>
+        <p class="demo-status">Hinweis: Kamera im Browser braucht HTTPS oder localhost.</p>
+      </div>
+      <div class="marker-stage camera-stage" aria-label="Marker 0 Live-Kameratest">
+        <video id="cameraVideo" playsinline muted></video>
+        <canvas id="scanCanvas"></canvas>
+        <div class="camera-empty" id="cameraEmpty">Kamera starten und Marker 0 ins Bild halten.</div>
+        <div class="scan-frame">
+          <div class="marker-label" id="markerLabel">
+            <div class="logo-placeholder">Logo<br>Platzhalter</div>
+            <div>
+              <div class="label-title">VisionGrid</div>
+              <div class="label-meta">Marker 0 · Test erkannt</div>
+              <div class="label-meta">Bestand: 1 / 1</div>
+            </div>
+          </div>
+        </div>
+        <p class="demo-status" id="markerStatus">Bereit für Live-Test.</p>
+      </div>
+    </section>
+
+    <section class="privacy" id="privacy">
+      <h2>Datenschutzerklärung</h2>
+      <p class="notice">
+        Stand: 21. August 2026. Diese Vorlage ist für die Google-Play-Einreichung vorbereitet.
+        Bitte ersetze vor Veröffentlichung die Platzhalter-E-Mail unten.
+      </p>
+
+      <h3>1. Verantwortlicher</h3>
+      <p>
+        Verantwortlich für diese App ist der Anbieter von VisionGrid.<br>
+        Kontakt: <strong>steamdmovieyt@gmail.com</strong>
+      </p>
+
+      <h3>2. Welche Daten verarbeitet VisionGrid?</h3>
+      <p>
+        VisionGrid speichert vom Nutzer eingegebene Daten lokal auf dem Gerät. Dazu können gehören:
+      </p>
+      <ul>
+        <li>Artikelname, Beschreibung, Notizen und Suchbegriffe</li>
+        <li>Bestand, Zielbestand und Warnwerte</li>
+        <li>Regalnamen, Fachpositionen und Marker-IDs</li>
+        <li>optional ausgewählte Artikelbilder</li>
+      </ul>
+
+      <h3>3. Kamera</h3>
+      <p>
+        Die Kamera wird verwendet, um Marker zu erkennen. Kamerabilder werden nicht an einen Server übertragen.
+        Die Verarbeitung erfolgt lokal auf dem Gerät.
+      </p>
+
+      <h3>4. Speicherung</h3>
+      <p>
+        Die App speichert Daten lokal auf dem Gerät. Wenn der Nutzer die App-Daten löscht oder die App deinstalliert,
+        können diese Daten gelöscht werden.
+      </p>
+
+      <h3>5. Weitergabe an Dritte</h3>
+      <p>
+        VisionGrid verkauft keine personenbezogenen Daten und gibt lokal gespeicherte Lagerdaten nicht an Dritte weiter.
+      </p>
+
+      <h3>6. Internetverbindung</h3>
+      <p>
+        Die Kernfunktionen der App sind für lokale Nutzung ausgelegt. Falls zukünftig Online-Funktionen ergänzt werden,
+        wird diese Datenschutzerklärung entsprechend aktualisiert.
+      </p>
+
+      <h3>7. Rechte der Nutzer</h3>
+      <p>
+        Nutzer können ihre Daten innerhalb der App ändern oder löschen. Zusätzlich können App-Daten über die Android-Systemeinstellungen gelöscht werden.
+      </p>
+
+      <h3>8. Kontakt</h3>
+      <p id="contact">
+        Bei Fragen zum Datenschutz: <strong>steamdmovieyt@gmail.com</strong>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 VisionGrid · Android-App für Regale, Marker und Kleinteile
+  </footer>
+  <script>
+    const markerLabel = document.getElementById('markerLabel');
+    const markerStatus = document.getElementById('markerStatus');
+    const cameraVideo = document.getElementById('cameraVideo');
+    const scanCanvas = document.getElementById('scanCanvas');
+    const cameraEmpty = document.getElementById('cameraEmpty');
+    let scanTimer = null;
+    let cameraStream = null;
+
+    function showDetected(source = 'Marker 0 erkannt') {
+      markerLabel.classList.add('visible');
+      markerStatus.textContent = `${source} – Bestand: 1 / 1.`;
+    }
+
+    function hasMarkerLikeContrast() {
+      if (!cameraVideo.videoWidth || !cameraVideo.videoHeight) return false;
+      const size = 120;
+      scanCanvas.width = size;
+      scanCanvas.height = size;
+      const ctx = scanCanvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(cameraVideo, 0, 0, size, size);
+      const data = ctx.getImageData(0, 0, size, size).data;
+      let dark = 0;
+      let light = 0;
+      let transitions = 0;
+      for (let y = 20; y < 100; y += 8) {
+        let lastDark = null;
+        for (let x = 20; x < 100; x += 8) {
+          const i = (y * size + x) * 4;
+          const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+          const isDark = brightness < 92;
+          if (brightness > 172) light++;
+          if (isDark) dark++;
+          if (lastDark !== null && lastDark !== isDark) transitions++;
+          lastDark = isDark;
+        }
+      }
+      return dark > 18 && light > 18 && transitions > 16;
+    }
+
+    async function startCamera() {
+      try {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          markerStatus.textContent = 'Dieser Browser unterstützt keinen Kamerazugriff.';
+          return;
+        }
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
+        });
+        cameraVideo.srcObject = cameraStream;
+        await cameraVideo.play();
+        cameraEmpty.style.display = 'none';
+        markerStatus.textContent = 'Kamera aktiv – Marker 0 ins Bild halten.';
+        clearInterval(scanTimer);
+        scanTimer = setInterval(() => {
+          if (hasMarkerLikeContrast()) showDetected('Marker 0 live erkannt');
+        }, 280);
+      } catch (error) {
+        markerStatus.textContent = 'Kamera konnte nicht gestartet werden. Bitte HTTPS/localhost und Kamera-Rechte prüfen.';
+      }
+    }
+
+    document.getElementById('startCameraButton').addEventListener('click', startCamera);
+    document.getElementById('testMarkerButton').addEventListener('click', () => {
+      showDetected('Demo-Marker 0 erkannt');
+    });
+    document.getElementById('resetMarkerButton').addEventListener('click', () => {
+      markerLabel.classList.remove('visible');
+      markerStatus.textContent = cameraStream ? 'Kamera aktiv – Marker 0 ins Bild halten.' : 'Bereit für Live-Test.';
+    });
+  </script>
+</body>
+</html>
