@@ -160,11 +160,6 @@
       object-fit: contain;
       image-rendering: pixelated;
     }
-    .marker-id {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 700;
-    }
     .camera-stage {
       position: relative;
       min-height: 310px;
@@ -245,18 +240,14 @@
       opacity: 1;
       transform: translateY(0);
     }
-    .logo-placeholder {
+    .label-logo {
       height: 68px;
       width: 68px;
       border-radius: 14px;
       background: var(--soft);
-      border: 1px dashed #a9a59d;
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-size: 12px;
-      text-align: center;
-      line-height: 1.2;
+      border: 1px solid var(--line);
+      object-fit: cover;
+      box-shadow: 0 8px 18px rgba(47,51,55,.10);
     }
     .label-title {
       font-size: 19px;
@@ -346,14 +337,12 @@
           <div class="aruco-marker">
             <img class="aruco-grid" src="assets/aruco-4x4-1000-0.svg" alt="ArUco 4x4 1000 Marker 0">
           </div>
-          <div class="marker-id">Marker 0</div>
         </div>
         <div class="demo-actions">
           <button class="button" type="button" id="startCameraButton">Kamera starten</button>
           <button class="button" type="button" id="testMarkerButton">Demo anzeigen</button>
           <button class="button" type="button" id="resetMarkerButton">Zurücksetzen</button>
         </div>
-        <p class="demo-status">Hinweis: Kamera im Browser braucht HTTPS oder localhost.</p>
       </div>
       <div class="marker-stage camera-stage" aria-label="Marker 0 Live-Kameratest">
         <video id="cameraVideo" playsinline muted></video>
@@ -361,7 +350,7 @@
         <div class="camera-empty" id="cameraEmpty">Kamera starten und Marker 0 ins Bild halten.</div>
         <div class="scan-frame">
           <div class="marker-label" id="markerLabel">
-            <div class="logo-placeholder">Logo<br>Platzhalter</div>
+            <img class="label-logo" src="assets/visiongrid-logo.png" alt="VisionGrid Logo">
             <div>
               <div class="label-title">VisionGrid</div>
               <div class="label-meta">Marker 0 · Test erkannt</div>
